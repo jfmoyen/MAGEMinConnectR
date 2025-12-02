@@ -1,0 +1,20 @@
+Package: MAGEMinConnectR
+Type: Package
+Title: Provides a connecter to an existing MAGEMin installation
+Version: 0.1.0
+Authors@R: c(
+    person(
+      "Jean-François", "Moyen",
+      email = "jfmoyen@gmail.com",
+      role = c("aut", "cre")
+    )
+  )
+Description: Connects to MAGEMin
+    indeed.
+License: CC-something
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.3.1
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
