@@ -1,7 +1,7 @@
 EvaluateO <- function(FeOt,FeRatio){
   #' Estimate the amount of O2 for a given FeOt and FeO/Fe2O3 mass ratio
-  #' @param FeOt amount of FeOt, wt%
-  #' @param FeRation FeO/Fe2O3 weight ratio (Middlemost 1989)
+  #' @param FeOt amount of FeOt, wt.pct.
+  #' @param FeRatio FeO/Fe2O3 weight ratio (Middlemost 1989)
   #' @export
 
   M2 <- 72  # 56 + 16

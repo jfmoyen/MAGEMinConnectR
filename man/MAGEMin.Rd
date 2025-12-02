@@ -11,7 +11,8 @@ MAGEMin(
   X,
   Pkbar,
   TC,
-  extraMAGEMinParams = "name_solvus = true",
+  extraMAGEMinParams = NULL,
+  nameSolvus = T,
   showResults = F
 )
 }
@@ -25,8 +26,12 @@ MAGEMin(
 
 \item{TC}{numeric. Temperature, in degree celsius}
 
-\item{extraMAGEMinParams}{String. Extra parameters to be passed to MAGEMin minimization,
+\item{extraMAGEMinParams}{String or vector of strings. Extra parameters to be passed to MAGEMin minimization,
 for instance 'B=1.0' (to pass a buffer offset)}
+
+\item{nameSolvus}{boolean. Should the minerals with a solvus (e.g. pl and kfs) be renamed
+according to their composition? This corresponds to passing the option 'name_solvus = true'
+to MAGEMin (in julia).}
 
 \item{showResults}{Boolean. If true, print julia's summary of the minimlization.}
 }
