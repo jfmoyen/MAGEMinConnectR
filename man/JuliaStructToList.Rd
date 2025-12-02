@@ -2,10 +2,7 @@
 % Please edit documentation in R/MAGEMin_Parse.R
 \name{JuliaStructToList}
 \alias{JuliaStructToList}
-\title{Ancillary function to convert a complex julia struct to a R list
-Simple types (vectors of atomic types, etc) will be converted to 
-R equivalents, but more complex types will be returned as a JuliaObject
-that the user would need to manually process}
+\title{Ancillary function to convert a complex julia struct to a R list}
 \usage{
 JuliaStructToList(julia_object)
 }
@@ -17,7 +14,9 @@ A R list with the content of the input object
 }
 \description{
 Ancillary function to convert a complex julia struct to a R list
-Simple types (vectors of atomic types, etc) will be converted to 
+}
+\details{
+Simple types (vectors of atomic types, etc) will be converted to
 R equivalents, but more complex types will be returned as a JuliaObject
 that the user would need to manually process
 }

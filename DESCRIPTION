@@ -1,6 +1,6 @@
 Package: MAGEMinConnectR
 Type: Package
-Title: Provides a connecter to an existing MAGEMin installation
+Title: a connecter to an existing MAGEMin installation
 Version: 0.1.0
 Authors@R: c(
     person(
@@ -9,12 +9,16 @@ Authors@R: c(
       role = c("aut", "cre")
     )
   )
-Description: Connects to MAGEMin
-    indeed.
+Description: MAGEMinConnectR provides a wrapper to access MAGEMin 
+  (https://github.com/ComputationalThermodynamics/MAGEMin_C.jl), 
+  a julia package to calculate phase equlibrium. Specifically, it does single-point minimization 
+  for given P, T and composition (X), allowing the user to wrap this into their own R code.
+  For more details, see https://github.com/jfmoyen/MAGEMinConnectR
 License: CC-something
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.3.1
+Roxygen: list(markdown = TRUE)
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3

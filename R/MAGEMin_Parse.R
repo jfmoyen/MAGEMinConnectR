@@ -6,7 +6,7 @@
 
 JuliaStructToList <- function(julia_object){
   #' Ancillary function to convert a complex julia struct to a R list
-  #' Simple types (vectors of atomic types, etc) will be converted to 
+  #' @details Simple types (vectors of atomic types, etc) will be converted to 
   #' R equivalents, but more complex types will be returned as a JuliaObject
   #' that the user would need to manually process
   #' @param julia_object A Julia struct (made of several fields)
