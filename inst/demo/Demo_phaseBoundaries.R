@@ -61,3 +61,21 @@ out <- findLowerStability("opx",
                    showMinimizationResults=F
 )
 # 837.5
+
+## Upper bound
+out <- findUpperStability("pl",
+                          Tlow = 800,
+                          Thigh = 1200,
+                          maxIter = 32,
+                          AmountTolerance = 0.5 / 100,
+                          verbose = T,
+                          printPhaseBoundaryResults = T,
+                          ### arguments passed to MAGEMin() ###
+                          Xoxides = Xoxides,
+                          X = rock,
+                          Pkbar = 4.5,
+                          showMinimizationResults=F)
+# 1025
+
+
+

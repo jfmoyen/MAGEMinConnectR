@@ -1,9 +1,16 @@
 ### Find upper/lower stability bounds of phases, using the bissection method
 
-findSolidus <- function(printPhaseBoundaryResults = T,...) {
+findSolidus <- function(Tlow = 550, Thigh = 1450,
+                        maxIter = 32, AmountTolerance = 0.5 / 100,
+                        verbose = F, printPhaseBoundaryResults = T,
+                        ### arguments passed to MAGEMin()
+                        ...) {
   #' @rdname findLowerStability
   #' @export
   out <- findLowerStability(phasename = "liq",
+                            Tlow = Tlow, Thigh = Thigh,
+                            maxIter = maxIter, AmountTolerance = AmountTolerance,
+                            verbose = verbose, 
                             printPhaseBoundaryResults = F,
                             ...)
 
@@ -52,8 +59,8 @@ findLowerStability <- function(phasename,
   #' 
   #' @description
     #' Various functions that allow to find lower and upper stability bounds for phases.
-    #' `findLowerStability()` and `findLowerStability()` can be used on any phase, specified with `phasename=``.
-    #' `findSolidus()` is a convenience function, strictly equivalent to `findLowerStability(phasename="liq")`.
+    #' `findLowerStability()` and `findLowerStability()` can be used on any phase, specified with `phasename=...`.
+    #' `findSolidus()` is a convenience function, strictly equivalent to `findLowerStability(phasename="liq",...)`.
     #' 
   #' @param phasename (string) the name of the phase to look for, as known from MAGEMin.
   #' @param Tlow,Thigh Initial search range (see details)
@@ -81,6 +88,11 @@ findLowerStability <- function(phasename,
     #'  
     #'  Fixing the initial range is somewhat more tricky. For a simple phase (liquid) there is no reason to keep it too narrow.
     #'  For a more complex stability field, you probably need to have an idea of what you are doing.
+    #'  
+    #'  One of the reason a computation may run for a long time is when the system does not find a solution, and
+    #'  is "stuck" at one of the bounds (upper/lower). Possible solutions would be (i) to decrease the max number of iterations
+    #'  or (ii) to widen the bound - remember, this adds only one or two iterations but ensures that you will find
+    #'  the solution, most likely long before reaching `maxIter`.
     #'  
   #' @export
   iteration <- 0
@@ -164,87 +176,93 @@ findLowerStability <- function(phasename,
   invisible(out)
 }
 
-################ OKZ ###############
-#' findSolidus <- function(Tlow = 550, Thigh = 1450,
-#'                         maxIter = 32, AmountTolerance = 0.5 / 100,
-#'                         verbose = F, printPhaseBoundaryResults = T,
-#'                         ### arguments passed to MAGEMin()
-#'                         ...) {
-#'   #' Find solidus ... 
-#'   iteration <- 0
-#'   liq <- 1
-#'   Tcurrent <- (Thigh + Tlow) / 2
-#'   
-#'   while (iteration < maxIter && liq > AmountTolerance){
-#'    
-#'     Tcurrent <- (Thigh + Tlow) / 2
-#'     iteration <- iteration + 1
-#'     
-#'     out <- MAGEMin(TC = Tcurrent, ...)
-#'     ph <- getPhProp(out)
-#'     liq <- ph["liq"]
-#'     
-#'     if (verbose) {
-#'       cat("\n-------------\nIteration:",
-#'           iteration,
-#'           "\n-------------\n")
-#'       cat("T current:", Tcurrent, "\n")
-#'       cat("Liquid:", liq, "\n")
-#'     }
-#'     
-#'     if (is.na(liq)) {
-#'       # No liquid, too cold !
-#'       Tlow <- Tcurrent
-#'       liq <- 2 # a trick to stay in the while loop...
-#'     } else{
-#'       # liquid present, too hot !
-#'       Thigh <- Tcurrent
-#'     }
-#'     if (verbose) {
-#'       cat("Trange:", round(Tlow, 1), "-", round(Thigh, 1), "\n")
-#'     }
-#'     
-#'     ## DEBUG
-#'     # cat("Booleans:\n")
-#'     # cat(iteration < maxIter,"\n")
-#'     # cat(liq > AmountTolerance,"\n")
-#'     
-#'   } # end of while loop
-#'   
-#'   ### Final steps
-#'   if (verbose) {
-#'     cat("\n================================\n")
-#'   }
-#'   if (liq < AmountTolerance) {
-#'     out$solidus_found <- TRUE
-#'     if (printPhaseBoundaryResults) {
-#'       cat("Solidus found at",
-#'           round(Tcurrent, 1),
-#'           "°C after",
-#'           iteration,
-#'           "iterations.\n")
-#'     }
-#'   } else{
-#'     out$solidus_found <- FALSE
-#'     if (printPhaseBoundaryResults) {
-#'       if (liq == 2) {
-#'         liqText <- "no liquid"
-#'       } else{
-#'         liqText <- paste(round(liq * 100, 1), "wt%.")
-#'       }
-#'       cat(
-#'         "Solidus not found. Closest approx:",
-#'         round(Tcurrent),
-#'         "°C with",
-#'         liqText,
-#'         "after",
-#'         iteration,
-#'         "iterations.\n"
-#'       )
-#'     }
-#'     
-#'   }
-#'   out$iterations <- iteration
-#'   
-#'   invisible(out)
-#' }
+
+findUpperStability <- function(phasename,
+                               Tlow = 550, Thigh = 1450,
+                               maxIter = 32, AmountTolerance = 0.5 / 100,
+                               verbose = F, printPhaseBoundaryResults = T,
+                               ### arguments passed to MAGEMin()
+                               ...) {
+  #' @rdname findLowerStability
+  #' @export
+  #' 
+  iteration <- 0
+  phprop <- 1
+  Tcurrent <- (Thigh + Tlow) / 2
+  
+  while (iteration < maxIter && phprop > AmountTolerance){
+    
+    Tcurrent <- (Thigh + Tlow) / 2
+    iteration <- iteration + 1
+    
+    out <- MAGEMin(TC = Tcurrent, ...)
+    ph <- getPhProp(out)
+    phprop <- ph[phasename]
+    
+    if (verbose) {
+      cat("\n-------------\nIteration:",
+          iteration,
+          "\n-------------\n")
+      cat("T current:", Tcurrent, "\n")
+      cat(phasename,": ", phprop, "\n",sep="")
+    }
+    
+    if (is.na(phprop)) {
+      # Phase not present, too hot !
+      Thigh <- Tcurrent
+      phprop <- 2 # a trick to stay in the while loop...
+    } else{
+      # liquid present, too cold !
+      Tlow <- Tcurrent
+    }
+    if (verbose) {
+      cat("Trange:", round(Tlow, 1), "-", round(Thigh, 1), "\n")
+    }
+    
+    ## DEBUG
+    # cat("Booleans:\n")
+    # cat(iteration < maxIter,"\n")
+    # cat(phprop > AmountTolerance,"\n")
+    
+  } # end of while loop
+  
+  ### Final steps
+  if (verbose) {
+    cat("\n================================\n")
+  }
+  
+  boundFieldName <- paste("upper",phasename,"Boundary_found",sep="_")
+  
+  if (phprop < AmountTolerance) {
+    out[[boundFieldName]] <- TRUE
+    if (printPhaseBoundaryResults) {
+      cat("Upper boundary found at",
+          round(Tcurrent, 1),
+          "°C after",
+          iteration,
+          "iterations.\n")
+    }
+  } else{
+    out[[boundFieldName]] <- FALSE
+    if (printPhaseBoundaryResults) {
+      if (phprop == 2) {
+        phText <- paste("no",phasename)
+      } else{
+        phText <- paste(round(phprop * 100, 1), "wt%.")
+      }
+      cat(
+        "Upper boundary not found. Closest approx:",
+        round(Tcurrent),
+        "°C with",
+        phText,
+        "after",
+        iteration,
+        "iterations.\n"
+      )
+    }
+    
+  }
+  out$iterations <- iteration
+  
+  invisible(out)
+}

@@ -3,9 +3,18 @@
 \name{findSolidus}
 \alias{findSolidus}
 \alias{findLowerStability}
+\alias{findUpperStability}
 \title{Find phase boundaries}
 \usage{
-findSolidus(printPhaseBoundaryResults = T, ...)
+findSolidus(
+  Tlow = 550,
+  Thigh = 1450,
+  maxIter = 32,
+  AmountTolerance = 0.5/100,
+  verbose = F,
+  printPhaseBoundaryResults = T,
+  ...
+)
 
 findLowerStability(
   phasename,
@@ -17,14 +26,19 @@ findLowerStability(
   printPhaseBoundaryResults = T,
   ...
 )
+
+findUpperStability(
+  phasename,
+  Tlow = 550,
+  Thigh = 1450,
+  maxIter = 32,
+  AmountTolerance = 0.5/100,
+  verbose = F,
+  printPhaseBoundaryResults = T,
+  ...
+)
 }
 \arguments{
-\item{printPhaseBoundaryResults}{Report on the outcome of the calculation}
-
-\item{...}{Further arguments that will be passed to \code{\link[=MAGEMin]{MAGEMin()}}}
-
-\item{phasename}{(string) the name of the phase to look for, as known from MAGEMin.}
-
 \item{Tlow, Thigh}{Initial search range (see details)}
 
 \item{maxIter}{Maximum number of iterations (see details)}
@@ -32,6 +46,12 @@ findLowerStability(
 \item{AmountTolerance}{The value of the phase under which the boundary is considered to be reached}
 
 \item{verbose}{Report information on every step (mostly for debuging purposes)}
+
+\item{printPhaseBoundaryResults}{Report on the outcome of the calculation}
+
+\item{...}{Further arguments that will be passed to \code{\link[=MAGEMin]{MAGEMin()}}}
+
+\item{phasename}{(string) the name of the phase to look for, as known from MAGEMin.}
 }
 \value{
 A list containing the MAGEMin output at the phase boundary, converted to a R list.
@@ -53,8 +73,14 @@ So the user has to decide on a crude but reasonably quick approximation (high to
 
 Fixing the initial range is somewhat more tricky. For a simple phase (liquid) there is no reason to keep it too narrow.
 For a more complex stability field, you probably need to have an idea of what you are doing.
+
+One of the reason a computation may run for a long time is when the system does not find a solution, and
+is "stuck" at one of the bounds (upper/lower). Possible solutions would be (i) to decrease the max number of iterations
+or (ii) to widen the bound - remember, this adds only one or two iterations but ensures that you will find
+the solution, most likely long before reaching \code{maxIter}.
 }
 \description{
 Various functions that allow to find lower and upper stability bounds for phases.
-\code{findLowerStability()} and \code{findLowerStability()} can be used on any phase, specified with \verb{phasename=``. }findSolidus()\verb{is a convenience function, strictly equivalent to}findLowerStability(phasename="liq")`.
+\code{findLowerStability()} and \code{findLowerStability()} can be used on any phase, specified with \code{phasename=...}.
+\code{findSolidus()} is a convenience function, strictly equivalent to \code{findLowerStability(phasename="liq",...)}.
 }

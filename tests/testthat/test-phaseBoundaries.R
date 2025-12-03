@@ -1,4 +1,4 @@
-test_that("Generic pahse boundary is found at the right place", {
+test_that("Generic lower phase boundary is found at the right place", {
   expect_equal(
     LBound_ATAC4( phasename="opx",
                   Tlow = 650,
@@ -13,6 +13,25 @@ test_that("Generic pahse boundary is found at the right place", {
                   Pkbar = 4.5,
                   showMinimizationResults=F)$T_C,
     837.5,
+    tolerance=1e-2
+  )
+})
+
+test_that("Generic upper phase boundary is found at the right place", {
+  expect_equal(
+    UBound_ATAC4( phasename="pl",
+                  Tlow = 650,
+                  Thigh = 1250,
+                  maxIter = 32,
+                  AmountTolerance = 0.5 / 100,
+                  verbose = F,
+                  printPhaseBoundaryResults = T,
+                  ### arguments passed to MAGEMin() ###
+                  Xoxides = Xoxides,
+                  X = rock,
+                  Pkbar = 4.5,
+                  showMinimizationResults=F)$T_C,
+    1025,
     tolerance=1e-2
   )
 })

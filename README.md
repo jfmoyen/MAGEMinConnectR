@@ -61,10 +61,18 @@ from the releases sections here and install it from a local file; or use
 devtools::install_github("jfmoyen/MAGEMinConnectR")
 ```
 
+## Main capacities
+
+MAGEMinConnectR can do the following things: \* Run a single-point
+MAGEMin calculation (and retrieve the results in R) - with `MAGEMin()`
+\* Find the stability limit of a phase - with `findLowerStability()` and
+`findUpperStability()`, and, in the case of the liquid, with
+`findSolidus()`
+
 ## Example
 
 You will find examples file in demo/Demo_xxx.R within the package
-directory. A basic example of a single point mnimization would be
+directory. A basic example of a single point minimization would be
 
 ``` r
 library(MAGEMinConnectR)
