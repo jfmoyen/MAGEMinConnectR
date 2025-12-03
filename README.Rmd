@@ -72,7 +72,7 @@ You will find examples file in demo/Demo_xxx.R within the package directory. A b
 ```{r example}
 library(MAGEMinConnectR)
 
-# Setup
+## Setup
 # You need to point to the directory where your Julia executable is located. 
 # If the environment variable JULIA_HOME is properly set, it can be omitted.
 # The setup function also has options for dataset to use, units etc.
@@ -80,7 +80,7 @@ library(MAGEMinConnectR)
 MAGEMin_setup(JULIA_HOME="C:\\Program Files\\Julia-1.11.5\\bin") 
 
 
-# MAGEMin oxides - here for the ig dataset
+## MAGEMin oxides - here for the ig dataset
 Xoxides <- c("SiO2", "Al2O3", "CaO", "MgO", "FeO",
              "K2O", "Na2O", "TiO2", "O", "H2O")
 
@@ -97,16 +97,17 @@ rock = c(SiO2 = 57.28,
          H2O = 5.0 # julia needs float to be explicitely given as decimals (5.0 not 5)
          )  #ATAC-4
 
+## Minimization
 # The first minimization always takes a bit longer
 # because julia compiles the code the first time...
 out <- MAGEMin(Xoxides,X = rock,
                Pkbar = 4.5,TC=900,
                showMinimizationResults=T)
 
-# Phase Proportions
+## Phase Proportions
 getPhProp(out)
 
-# Phase composition
+## Phase composition
 getSSComp(out,"liq") # in the default system unit, wt%
 getSSComp(out,"pl","emmol") # in end-member mol fraction
 # Note that MAGEMin automatically "sorts" solvus minerals (fsp -> ksp, pl) unless you suppress

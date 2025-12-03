@@ -80,7 +80,7 @@ directory. A basic example of a single point minimization would be
 library(MAGEMinConnectR)
 #> Le chargement a nécessité le package : JuliaCall
 
-# Setup
+## Setup
 # You need to point to the directory where your Julia executable is located. 
 # If the environment variable JULIA_HOME is properly set, it can be omitted.
 # The setup function also has options for dataset to use, units etc.
@@ -97,7 +97,7 @@ MAGEMin_setup(JULIA_HOME="C:\\Program Files\\Julia-1.11.5\\bin")
 #> MAGEMin ready!
 
 
-# MAGEMin oxides - here for the ig dataset
+## MAGEMin oxides - here for the ig dataset
 Xoxides <- c("SiO2", "Al2O3", "CaO", "MgO", "FeO",
              "K2O", "Na2O", "TiO2", "O", "H2O")
 
@@ -114,18 +114,19 @@ rock = c(SiO2 = 57.28,
          H2O = 5.0 # julia needs float to be explicitely given as decimals (5.0 not 5)
          )  #ATAC-4
 
+## Minimization
 # The first minimization always takes a bit longer
 # because julia compiles the code the first time...
 out <- MAGEMin(Xoxides,X = rock,
                Pkbar = 4.5,TC=900,
                showMinimizationResults=T)
 
-# Phase Proportions
+## Phase Proportions
 getPhProp(out)
 #>        amp        liq         pl        cpx        opx 
 #> 0.22219649 0.62370215 0.09213501 0.01442538 0.04754097
 
-# Phase composition
+## Phase composition
 getSSComp(out,"liq") # in the default system unit, wt%
 #>        SiO2       Al2O3         CaO         MgO         FeO         K2O 
 #> 0.621025461 0.143612555 0.039671654 0.020143336 0.040671571 0.011870862 
