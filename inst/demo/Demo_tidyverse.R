@@ -14,8 +14,16 @@ MAGEMin_setup(JULIA_HOME="C:\\Program Files\\Julia-1.11.5\\bin")
 # Pay attention in this case to FeO/Fe2O3/FeOt etc., also check H2O in your file
 atac <- read_xlsx("D:\\R\\win-library\\4.3\\GCDkit\\Test_data\\atacazo.xlsx")
 
-pb <- progress::progress_bar$new(total=nrow(atac))
-atac %>%  mutate(FeO = Fe2O3/1.111,
+## The following may take a while !
+# You are doing on average 1 minimization for each of 109 samples
+#  at 0.2-0.5 s each on a modern machine this means about a minute
+# For a shorter calculation,adjust N_sample
+
+N_sample <- nrow(atac)
+# N_sample <- 10
+pb <- progress::progress_bar$new(total=N_sample)
+atac %>%  slice_head(n=N_sample)  %>%
+  mutate(FeO = Fe2O3/1.111,
                  O =  EvaluateO(FeO,0.3),
                  H2O = 5) %>% # No H2O given, add manually (excess)
   rowwise() %>%

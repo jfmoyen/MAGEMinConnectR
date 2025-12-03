@@ -77,5 +77,18 @@ out <- findUpperStability("pl",
                           showMinimizationResults=F)
 # 1025
 
-
+## Liquidus
+out <- findLiquidus(Tlow = 800,
+                   Thigh = 1500,
+                   maxIter = 32,
+                   AmountTolerance = 0.5 / 100,
+                   verbose = T,
+                   printPhaseBoundaryResults = T,
+                   ### arguments passed to MAGEMin() ###
+                   Xoxides = Xoxides,
+                   X = rock,
+                   Pkbar = 4.5,
+                   showMinimizationResults=F
+)
+# 1024.2 Liquid: 0.9989859
 

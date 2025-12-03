@@ -55,3 +55,21 @@ test_that("Solidus front-end does its job", {
   )
 })
 
+
+test_that("Liqidus is found", {
+  expect_equal(
+    Liquidus_ATAC4(Tlow = 800,
+                  Thigh = 1500,
+                  maxIter = 32,
+                  AmountTolerance = 0.5 / 100,
+                  verbose = F,
+                  printPhaseBoundaryResults = T,
+                  ### arguments passed to MAGEMin() ###
+                  Xoxides = Xoxides,
+                  X = rock,
+                  Pkbar = 4.5,
+                  showMinimizationResults=F)$T_C,
+    1024.2,
+    tolerance=1e-2
+  )
+})
