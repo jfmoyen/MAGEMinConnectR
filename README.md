@@ -63,11 +63,13 @@ devtools::install_github("jfmoyen/MAGEMinConnectR")
 
 ## Main capacities
 
-MAGEMinConnectR can do the following things: \* Run a single-point
-MAGEMin calculation (and retrieve the results in R) - with `MAGEMin()`
-\* Find the stability limit of a phase - with `findLowerStability()` and
-`findUpperStability()`, and, in the case of the liquid, with
-`findSolidus()`
+MAGEMinConnectR can do the following things:
+
+- Run a single-point MAGEMin calculation (and retrieve the results
+  in R) - with `MAGEMin()`
+- Find the stability limit of a phase - with `findLowerStability()` and
+  `findUpperStability()`, and, in the case of the liquid, with
+  `findSolidus()`
 
 ## Example
 
@@ -78,6 +80,11 @@ directory. A basic example of a single point minimization would be
 library(MAGEMinConnectR)
 #> Le chargement a nécessité le package : JuliaCall
 
+# Setup
+# You need to point to the directory where your Julia executable is located. 
+# If the environment variable JULIA_HOME is properly set, it can be omitted.
+# The setup function also has options for dataset to use, units etc.
+# use ?MAGEMin_setup for details.
 MAGEMin_setup(JULIA_HOME="C:\\Program Files\\Julia-1.11.5\\bin") 
 #> Setting up julia ... may take up to a few minutes
 #> Starting Julia
@@ -88,10 +95,7 @@ MAGEMin_setup(JULIA_HOME="C:\\Program Files\\Julia-1.11.5\\bin")
 #> Attempting to load MAGEMin
 #> Initializing MAGEMin calculation
 #> MAGEMin ready!
-# Or wherever your Julia executable is located. If the environment variable JULIA_HOME
-# is properly set, it can be omitted.
-# The setup function also has options for datasetr to use, units etc.
-# use ?MAGEMin_setup.
+
 
 # MAGEMin oxides - here for the ig dataset
 Xoxides <- c("SiO2", "Al2O3", "CaO", "MgO", "FeO",
