@@ -92,6 +92,11 @@ is "stuck" at one of the bounds (upper/lower). Possible solutions would be (i) t
 or (ii) to widen the bound - remember, this adds only one or two iterations but ensures that you will find
 the solution, most likely long before reaching \code{maxIter}.
 
+In case of a strongly eutectic behaviour (lots of melt forming at a given T), the function will struggle
+to find the minimum. I cannot think of an esay fix. Probably set a reasonable \code{maxIter} and hope for
+the best. Keep in mind that you half the range with each iteration, so with \code{maxIter=10} you divided
+the original range by 10 and you are probably within a degree if the actual temperature...
+
 \code{findLiquidus()} follows the same logic, but looks for the highest temperature where liquid is \emph{not}
 the only stable phase.
 }

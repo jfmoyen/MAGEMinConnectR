@@ -13,6 +13,11 @@ MAGEMin_setup(
 )
 }
 \arguments{
+\item{JULIA_HOME}{Environment variable containing the path to the
+julia directory. Probably something like C:\\Program Files\\Julia-1.11.5\\bin}
+
+\item{restart}{Boolean. If true, julia instance is restarted (otherwise an existing instance is used)}
+
 \item{db}{Database to use. From \link{https://github.com/ComputationalThermodynamics/MAGEMin_C.jl/blob/main/docs/src/MAGEMin_C/MAGEMin_C.md},
 it can be one of mtl -> mantle (Holland et al., 2013) - mp -> metapelite (White et al., 2014) - mb -> metabasite (Green et al., 2016) -
 ig -> igneous (Green et al., 2025 updated from and replacing Holland et al., 2018) - igad -> igneous alkaline dry (Weller et al., 2024) -
@@ -27,11 +32,6 @@ solvus (e.g. afs/pl)}
 \item{extraMAGEMinParams}{String. Extra parameters to be passed to MAGEMin minimization,
 for instance \code{'verbose = false, buffer= \\"qfm\\" '} (don't forget to protect quotation marks)
 If you want to use a buffer, don't forget to pass an offset in the actual MAGEMincall, as \code{'B=1.0'} for instance (QFM+1).}
-
-\item{JULIA_HOME:}{Environment variable containing the path to the
-julia directory. Probably something like C:\\Program Files\\Julia-1.11.5\\bin}
-
-\item{restart:}{Boolean. If true, julia instance is restarted (otherwise an existing instance is used)}
 }
 \value{
 Nothing. This is purely used for side effects. However the function also triggers

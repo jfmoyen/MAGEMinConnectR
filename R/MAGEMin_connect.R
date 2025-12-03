@@ -16,9 +16,9 @@ MAGEMin_setup <- function(JULIA_HOME=Sys.getenv("JULIA_HOME"),
     #' with required parameters. On the first time, this may take up to a minute.
     #' Further runs will be nearly instantaneous.
   #'
-  #' @param JULIA_HOME: Environment variable containing the path to the
+  #' @param JULIA_HOME Environment variable containing the path to the
   #' julia directory. Probably something like C:\\Program Files\\Julia-1.11.5\\bin
-  #' @param restart: Boolean. If true, julia instance is restarted (otherwise an existing instance is used)
+  #' @param restart Boolean. If true, julia instance is restarted (otherwise an existing instance is used)
   #' @param db Database to use. From [https://github.com/ComputationalThermodynamics/MAGEMin_C.jl/blob/main/docs/src/MAGEMin_C/MAGEMin_C.md],
   #' it can be one of mtl -> mantle (Holland et al., 2013) - mp -> metapelite (White et al., 2014) - mb -> metabasite (Green et al., 2016) -
   #' ig -> igneous (Green et al., 2025 updated from and replacing Holland et al., 2018) - igad -> igneous alkaline dry (Weller et al., 2024) -
