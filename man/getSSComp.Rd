@@ -2,7 +2,7 @@
 % Please edit documentation in R/MAGEMin_Parse.R
 \name{getSSComp}
 \alias{getSSComp}
-\title{Extract the composition of a solid solution phase from MAGEMin results}
+\title{Get solid solution composition}
 \usage{
 getSSComp(MMo, phName, unit = "wt")
 }
@@ -18,5 +18,6 @@ can be moles, weight, atom per formula unit or end-member proportions (in mol or
 A named vector of phase composition
 }
 \description{
-Extract the composition of a solid solution phase from MAGEMin results
+Extract the composition of a solid solution phase from MAGEMin results.
+The unit of choice can be specified.
 }

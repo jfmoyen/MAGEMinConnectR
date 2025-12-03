@@ -1,3 +1,4 @@
+
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 # MAGEMinConnectR
@@ -6,39 +7,55 @@
 
 <!-- badges: end -->
 
-MAGEMinConnectR provides a wrapper to access MAGEMin (<https://github.com/ComputationalThermodynamics/MAGEMin_C.jl>), a julia package to calculate phase equlibrium. Specifically, a main function, `MAGEMin(Xoxides,X,Pkbar,TC,...)` does single-point minimization for given P, T and composition (X), allowing the user to wrap this into their own R code.
+MAGEMinConnectR provides a wrapper to access MAGEMin
+(<https://github.com/ComputationalThermodynamics/MAGEMin_C.jl>), a julia
+package to calculate phase equlibrium. Specifically, a main function,
+`MAGEMin(Xoxides,X,Pkbar,TC,...)` does single-point minimization for
+given P, T and composition (X), allowing the user to wrap this into
+their own R code.
 
-Most users are probably more familiar with the MAGEMin App (<https://github.com/ComputationalThermodynamics/MAGEMin>). There are in fact three components: \* `MAGEMin` itself, a C code that does the heavy loading; \* `MAGEMin_C.jl`, a julia wrapper that we exploit here; \* `MAGEMinApp.jl`, a julia App that connects to the wrapper and plots diagrams.
+Most users are probably more familiar with the MAGEMin App
+(<https://github.com/ComputationalThermodynamics/MAGEMin>). There are in
+fact three components: \* `MAGEMin` itself, a C code that does the heavy
+loading; \* `MAGEMin_C.jl`, a julia wrapper that we exploit here; \*
+`MAGEMinApp.jl`, a julia App that connects to the wrapper and plots
+diagrams.
 
-Here we are using the MAGEMin_C part, i.e. we write a wrapper to access a wrapper…
+Here we are using the MAGEMin_C part, i.e. we write a wrapper to access
+a wrapper…
 
 ## Installation
 
-MAGEMinConnectR requires a working installation of MAGEMin, and a way to reach it. Thus, the user must install (and configure):
+MAGEMinConnectR requires a working installation of MAGEMin, and a way to
+reach it. Thus, the user must install (and configure):
 
 1.  julia (<https://julialang.org>)
 2.  The `MAGEMin_C` package, in julia
 3.  R library `JuliaCall`, that contains the connector.
 
-Installing `MAGEMin_C` is documented on their [webpage](https://github.com/ComputationalThermodynamics/MAGEMin), simply using julia’s package manager:
+Installing `MAGEMin_C` is documented on their
+[webpage](https://github.com/ComputationalThermodynamics/MAGEMin),
+simply using julia’s package manager:
 
-```         
-julia> ]
-pkg> add MAGEMin_C
-```
+    julia> ]
+    pkg> add MAGEMin_C
 
-However, while you are at it, it is probably more sensible to also install the app:
+However, while you are at it, it is probably more sensible to also
+install the app:
 
-```         
-julia> ]
-pkg> add MAGEMinApp
-```
+    julia> ]
+    pkg> add MAGEMinApp
 
-(which will take care of dependencies and thus also install `MAGEMin_C` - and you get to use the App if you want!)
+(which will take care of dependencies and thus also install
+`MAGEMin_C` - and you get to use the App if you want!)
 
-`JuliaCall` is installed via the usual channels, `install.packages("JuliaCall")` or via their github page (<https://github.com/JuliaInterop/JuliaCall>). julia can also be installed from there.
+`JuliaCall` is installed via the usual channels,
+`install.packages("JuliaCall")` or via their github page
+(<https://github.com/JuliaInterop/JuliaCall>). julia can also be
+installed from there.
 
-Finally, MAGEMinConnectR is a regular R library. You can download it from the releases sections here and install it from a local file; or use
+Finally, MAGEMinConnectR is a regular R library. You can download it
+from the releases sections here and install it from a local file; or use
 
 ``` r
 devtools::install_github("jfmoyen/MAGEMinConnectR")
@@ -46,10 +63,12 @@ devtools::install_github("jfmoyen/MAGEMinConnectR")
 
 ## Example
 
-You will find a longer example file in demo/Demo.R within the package directory. A basic example of a single point mnimization would be
+You will find examples file in demo/Demo_xxx.R within the package
+directory. A basic example of a single point mnimization would be
 
 ``` r
 library(MAGEMinConnectR)
+#> Le chargement a nécessité le package : JuliaCall
 
 MAGEMin_setup(JULIA_HOME="C:\\Program Files\\Julia-1.11.5\\bin") 
 #> Setting up julia ... may take up to a few minutes
@@ -87,7 +106,7 @@ rock = c(SiO2 = 57.28,
 # because julia compiles the code the first time...
 out <- MAGEMin(Xoxides,X = rock,
                Pkbar = 4.5,TC=900,
-               showResults=T)
+               showMinimizationResults=T)
 
 # Phase Proportions
 getPhProp(out)

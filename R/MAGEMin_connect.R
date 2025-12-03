@@ -9,11 +9,17 @@ MAGEMin_setup <- function(JULIA_HOME=Sys.getenv("JULIA_HOME"),
                           db = "ig",
                           sys_in = "wt",
                           extraMAGEMinParams="verbose=true"){
-  #' Initiate julia and MAGEMin project. This may take up to a minute.
+  #' Initiate julia and MAGEMin project.
+  #'
+  #' @description
+    #' This function starts julia, loads MAGEMin_C library and setups MAGEMin
+    #' with required parameters. On the first time, this may take up to a minute.
+    #' Further runs will be nearly instantaneous.
+  #'
   #' @param JULIA_HOME: Environment variable containing the path to the
   #' julia directory. Probably something like C:\\Program Files\\Julia-1.11.5\\bin
   #' @param restart: Boolean. If true, julia instance is restarted (otherwise an existing instance is used)
-  #' @param db Database to use. From https://github.com/ComputationalThermodynamics/MAGEMin_C.jl/blob/main/docs/src/MAGEMin_C/MAGEMin_C.md,
+  #' @param db Database to use. From [https://github.com/ComputationalThermodynamics/MAGEMin_C.jl/blob/main/docs/src/MAGEMin_C/MAGEMin_C.md],
   #' it can be one of mtl -> mantle (Holland et al., 2013) - mp -> metapelite (White et al., 2014) - mb -> metabasite (Green et al., 2016) -
   #' ig -> igneous (Green et al., 2025 updated from and replacing Holland et al., 2018) - igad -> igneous alkaline dry (Weller et al., 2024) -
   #' um -> ultramafic (Evans & Frost, 2021) - sb11 -> Stixrude & Lithgow-Bertelloni (2011) - sb21 -> Stixrude & Lithgow-Bertelloni (2021) -
@@ -23,19 +29,19 @@ MAGEMin_setup <- function(JULIA_HOME=Sys.getenv("JULIA_HOME"),
   #' solvus (e.g. afs/pl)
   #' @param sys_in System units ("wt", "mol")
   #' @param extraMAGEMinParams String. Extra parameters to be passed to MAGEMin minimization,
-  #' for instance 'verbose = false, buffer= \"qfm\" ' (don't forget to protect quotation marks)
-  #' If you want to use a buffer, don't forget to pass an offset in the actual MAGEMincall, as 'B=1.0' for instance (QFM+1).
+  #' for instance `'verbose = false, buffer= \"qfm\" '` (don't forget to protect quotation marks)
+  #' If you want to use a buffer, don't forget to pass an offset in the actual MAGEMincall, as `'B=1.0'` for instance (QFM+1).
   #' @details
   #' Similar to all functions in this package, the main goal is to pass commands to
   #' an underlying instance of julia. Very few checks happen R-side, so if something fails
   #' you will probably get julia's error messages.
   #'
   #' The function actully does 3 things: (i) it starts a julia instance, with
-  #' JuliaCall::julia_setup(); (ii) it loads the MAGEMin library, with\code{using MAGEMin},
+  #' [JuliaCall::julia_setup()]; (ii) it loads the MAGEMin library, with \code{using MAGEMin},
   #' executed in julia; (iii) it initializes a MAGEMin calculation with the required parameters.
   #'
   #' If you want to initialize a julia instance without MAGEMin, use the regular
-  #' JuliaCall::julia_setup().
+  #' [JuliaCall::julia_setup()].
   #'
   #' Once a julia instance is setup, it will persist until the end of the session.
   #' All subsequent computations will happen in the same julia instance.
@@ -79,34 +85,42 @@ MAGEMin_setup <- function(JULIA_HOME=Sys.getenv("JULIA_HOME"),
   invisible(NULL)
 }
 
-
-
-MAGEMin <- function(Xoxides,X,Pkbar,TC,extraMAGEMinParams=NULL,nameSolvus=T,showResults=F){
-  #' Do the actual MAGEMin calculation. This takes some time, typically 200-500 ms
-  #' for one run for MAGEMin proper + a bit of overhead for the various post-processing.
-  #' It is maybe clever to wrap it in a progress bar
+###########################################
+MAGEMin <- function(Xoxides,X,Pkbar,TC,
+                    extraMAGEMinParams=NULL,nameSolvus=T,
+                    showMinimizationResults=F){
+  #' Do the actual MAGEMin calculation.
+  #'
+  #' @description
+    #' This function runs a MAGEMin minimization.
+    #' This takes some time, typically 200-500 ms
+    #' for one run for MAGEMin proper + a bit of overhead for the various post-processing.
+    #' It is maybe clever to wrap it in a progress bar
+  #'
   #' @param Xoxides Character vector. Name of the oxides to use. They should exist in the MAGEMin database.
   #' @param X Numeric vector. Composition of the system for each oxide, matching Xoxides
   #' @param Pkbar numeric. Pressure, in kbar. The function makes sure that an integer is converted to a decimal
   #' (julia makes the difference)
   #' @param TC numeric. Temperature, in degree celsius
   #' @param extraMAGEMinParams String or vector of strings. Extra parameters to be passed to MAGEMin minimization,
-  #' for instance 'B=1.0' (to pass a buffer offset)
+  #' for instance `'B=1.0'` (to pass a buffer offset)
   #' @param nameSolvus boolean. Should the minerals with a solvus (e.g. pl and kfs) be renamed
-  #' according to their composition? This corresponds to passing the option 'name_solvus = true'
+  #' according to their composition? This corresponds to passing the option `'name_solvus = true'`
   #' to MAGEMin (in julia).
-  #' @param showResults Boolean. If true, print julia's summary of the minimlization.
-  #' @returns A list containing the MAGEMin output, converted to a R list. Most fields of the MAGEMin object
-  #' (technically a MAGEMin_C gmin_struct) are straightforwards to convert to R. However, the julia structure contains
-  #' complex types for SS_vec (solution phases), mSS_vec (metastable solutions) and PP_vec (pure phases). SS_vec and PP_vec are
+  #' @param showMinimizationResults Boolean. If true, print julia's summary of the minimlization.
+  #' @returns A list containing the MAGEMin output, converted to a R list.
+  #'
+  #' Most fields of the MAGEMin object
+  #' (technically a `MAGEMin_C gmin_struct)` are straightforwards to convert to R. However, the julia structure contains
+  #' complex types for `SS_vec` (solution phases), `mSS_vec` (metastable solutions) and `PP_vec` (pure phases). SS_vec and PP_vec are
   #' also parsed and converted to (sub)lists.
   #' Note that both still contain complex types, that are NOT converted to R and remain as JuliaObjects. In SS_vec
   #' these are the end-members compositions, that are known by definition.
   #' @note A side effect of the function is also to create a variable out in julia, that can be accessed
-  #' with julia_console() or julia_command() if needed.
-  #' julia_command("out") will invoke julia's print method and display summary info.
+  #' with [JuliaCall::julia_console()] or [JuliaCall::julia_command()] if needed.
+  #' `julia_command("out")` will invoke julia's print method and display summary info.
   #' If the julia object needs to be preserved, the best is probably to do something like
-  #' foo <- julia_eval("out") (in R)
+  #' `foo <- julia_eval("out")` (in R)
   #' @import JuliaCall
   #' @export
 
@@ -158,7 +172,7 @@ MAGEMin <- function(Xoxides,X,Pkbar,TC,extraMAGEMinParams=NULL,nameSolvus=T,show
   }
   # cat("Minimization succesful\n")
 
-  if(showResults){
+  if(showMinimizationResults){
     julia_command("out")
   }
 

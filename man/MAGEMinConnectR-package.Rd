@@ -66,6 +66,14 @@ getPhProp(out)
 See the github page,  \url{https://github.com/jfmoyen/MAGEMinConnectR}
 }
 
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/jfmoyen/MAGEMinConnectR}
+  \item Report bugs at \url{https://github.com/jfmoyen/MAGEMinConnectR/issues}
+}
+
+}
 \author{
 \strong{Maintainer}: Jean-François Moyen \email{jfmoyen@gmail.com}
 

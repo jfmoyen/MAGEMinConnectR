@@ -2,7 +2,7 @@
 % Please edit documentation in R/MAGEMin_connect.R
 \name{MAGEMin_setup}
 \alias{MAGEMin_setup}
-\title{Initiate julia and MAGEMin project. This may take up to a minute.}
+\title{Initiate julia and MAGEMin project.}
 \usage{
 MAGEMin_setup(
   JULIA_HOME = Sys.getenv("JULIA_HOME"),
@@ -13,7 +13,7 @@ MAGEMin_setup(
 )
 }
 \arguments{
-\item{db}{Database to use. From https://github.com/ComputationalThermodynamics/MAGEMin_C.jl/blob/main/docs/src/MAGEMin_C/MAGEMin_C.md,
+\item{db}{Database to use. From \link{https://github.com/ComputationalThermodynamics/MAGEMin_C.jl/blob/main/docs/src/MAGEMin_C/MAGEMin_C.md},
 it can be one of mtl -> mantle (Holland et al., 2013) - mp -> metapelite (White et al., 2014) - mb -> metabasite (Green et al., 2016) -
 ig -> igneous (Green et al., 2025 updated from and replacing Holland et al., 2018) - igad -> igneous alkaline dry (Weller et al., 2024) -
 um -> ultramafic (Evans & Frost, 2021) - sb11 -> Stixrude & Lithgow-Bertelloni (2011) - sb21 -> Stixrude & Lithgow-Bertelloni (2021) -
@@ -25,8 +25,8 @@ solvus (e.g. afs/pl)}
 \item{sys_in}{System units ("wt", "mol")}
 
 \item{extraMAGEMinParams}{String. Extra parameters to be passed to MAGEMin minimization,
-for instance 'verbose = false, buffer= \"qfm\" ' (don't forget to protect quotation marks)
-If you want to use a buffer, don't forget to pass an offset in the actual MAGEMincall, as 'B=1.0' for instance (QFM+1).}
+for instance \code{'verbose = false, buffer= \\"qfm\\" '} (don't forget to protect quotation marks)
+If you want to use a buffer, don't forget to pass an offset in the actual MAGEMincall, as \code{'B=1.0'} for instance (QFM+1).}
 
 \item{JULIA_HOME:}{Environment variable containing the path to the
 julia directory. Probably something like C:\\Program Files\\Julia-1.11.5\\bin}
@@ -38,7 +38,9 @@ Nothing. This is purely used for side effects. However the function also trigger
 package variables MM$JULIA_LOADED, MM$MAGEMIN_LOADED and MM$MAGEMIN_INITIALIZED (to true).
 }
 \description{
-Initiate julia and MAGEMin project. This may take up to a minute.
+This function starts julia, loads MAGEMin_C library and setups MAGEMin
+with required parameters. On the first time, this may take up to a minute.
+Further runs will be nearly instantaneous.
 }
 \details{
 Similar to all functions in this package, the main goal is to pass commands to
@@ -46,11 +48,11 @@ an underlying instance of julia. Very few checks happen R-side, so if something 
 you will probably get julia's error messages.
 
 The function actully does 3 things: (i) it starts a julia instance, with
-JuliaCall::julia_setup(); (ii) it loads the MAGEMin library, with\code{using MAGEMin},
+\code{\link[JuliaCall:julia_setup]{JuliaCall::julia_setup()}}; (ii) it loads the MAGEMin library, with \code{using MAGEMin},
 executed in julia; (iii) it initializes a MAGEMin calculation with the required parameters.
 
 If you want to initialize a julia instance without MAGEMin, use the regular
-JuliaCall::julia_setup().
+\code{\link[JuliaCall:julia_setup]{JuliaCall::julia_setup()}}.
 
 Once a julia instance is setup, it will persist until the end of the session.
 All subsequent computations will happen in the same julia instance.

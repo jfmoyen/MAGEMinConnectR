@@ -61,7 +61,7 @@ devtools::install_github("jfmoyen/MAGEMinConnectR")
 
 ## Example
 
-You will find a longer example file in demo/Demo.R within the package directory. A basic example of a single point mnimization would be
+You will find examples file in demo/Demo_xxx.R within the package directory. A basic example of a single point mnimization would be
 
 ```{r example}
 library(MAGEMinConnectR)
@@ -93,7 +93,7 @@ rock = c(SiO2 = 57.28,
 # because julia compiles the code the first time...
 out <- MAGEMin(Xoxides,X = rock,
                Pkbar = 4.5,TC=900,
-               showResults=T)
+               showMinimizationResults=T)
 
 # Phase Proportions
 getPhProp(out)

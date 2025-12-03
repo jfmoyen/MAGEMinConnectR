@@ -2,7 +2,7 @@
 % Please edit documentation in R/EvaluateO.R
 \name{EvaluateO}
 \alias{EvaluateO}
-\title{Estimate the amount of O2 for a given FeOt and FeO/Fe2O3 mass ratio}
+\title{Amount of O2 from Fe ratios}
 \usage{
 EvaluateO(FeOt, FeRatio)
 }
@@ -10,6 +10,9 @@ EvaluateO(FeOt, FeRatio)
 \item{FeOt}{amount of FeOt, wt.pct.}
 
 \item{FeRatio}{FeO/Fe2O3 weight ratio (Middlemost 1989)}
+}
+\value{
+The amount of O2, in wt.\%
 }
 \description{
 Estimate the amount of O2 for a given FeOt and FeO/Fe2O3 mass ratio

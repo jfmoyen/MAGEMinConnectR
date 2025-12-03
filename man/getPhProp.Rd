@@ -2,7 +2,7 @@
 % Please edit documentation in R/MAGEMin_Parse.R
 \name{getPhProp}
 \alias{getPhProp}
-\title{Return a named vector with phase proportions}
+\title{Get phases propoportions}
 \usage{
 getPhProp(MMo)
 }
@@ -13,5 +13,6 @@ getPhProp(MMo)
 A named vector of phase proportions
 }
 \description{
-Return a named vector with phase proportions
+Extract the (wt\%) proportions of each stable phase (pure or solid solution)
+from a MAGEMin object.
 }

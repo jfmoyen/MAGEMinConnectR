@@ -2,9 +2,7 @@
 % Please edit documentation in R/MAGEMin_connect.R
 \name{MAGEMin}
 \alias{MAGEMin}
-\title{Do the actual MAGEMin calculation. This takes some time, typically 200-500 ms
-for one run for MAGEMin proper + a bit of overhead for the various post-processing.
-It is maybe clever to wrap it in a progress bar}
+\title{Do the actual MAGEMin calculation.}
 \usage{
 MAGEMin(
   Xoxides,
@@ -13,7 +11,7 @@ MAGEMin(
   TC,
   extraMAGEMinParams = NULL,
   nameSolvus = T,
-  showResults = F
+  showMinimizationResults = F
 )
 }
 \arguments{
@@ -27,31 +25,34 @@ MAGEMin(
 \item{TC}{numeric. Temperature, in degree celsius}
 
 \item{extraMAGEMinParams}{String or vector of strings. Extra parameters to be passed to MAGEMin minimization,
-for instance 'B=1.0' (to pass a buffer offset)}
+for instance \code{'B=1.0'} (to pass a buffer offset)}
 
 \item{nameSolvus}{boolean. Should the minerals with a solvus (e.g. pl and kfs) be renamed
-according to their composition? This corresponds to passing the option 'name_solvus = true'
+according to their composition? This corresponds to passing the option \code{'name_solvus = true'}
 to MAGEMin (in julia).}
 
-\item{showResults}{Boolean. If true, print julia's summary of the minimlization.}
+\item{showMinimizationResults}{Boolean. If true, print julia's summary of the minimlization.}
 }
 \value{
-A list containing the MAGEMin output, converted to a R list. Most fields of the MAGEMin object
-(technically a MAGEMin_C gmin_struct) are straightforwards to convert to R. However, the julia structure contains
-complex types for SS_vec (solution phases), mSS_vec (metastable solutions) and PP_vec (pure phases). SS_vec and PP_vec are
+A list containing the MAGEMin output, converted to a R list.
+
+Most fields of the MAGEMin object
+(technically a \verb{MAGEMin_C gmin_struct)} are straightforwards to convert to R. However, the julia structure contains
+complex types for \code{SS_vec} (solution phases), \code{mSS_vec} (metastable solutions) and \code{PP_vec} (pure phases). SS_vec and PP_vec are
 also parsed and converted to (sub)lists.
 Note that both still contain complex types, that are NOT converted to R and remain as JuliaObjects. In SS_vec
 these are the end-members compositions, that are known by definition.
 }
 \description{
-Do the actual MAGEMin calculation. This takes some time, typically 200-500 ms
+This function runs a MAGEMin minimization.
+This takes some time, typically 200-500 ms
 for one run for MAGEMin proper + a bit of overhead for the various post-processing.
 It is maybe clever to wrap it in a progress bar
 }
 \note{
 A side effect of the function is also to create a variable out in julia, that can be accessed
-with julia_console() or julia_command() if needed.
-julia_command("out") will invoke julia's print method and display summary info.
+with \code{\link[JuliaCall:julia_console]{JuliaCall::julia_console()}} or \code{\link[JuliaCall:julia_command]{JuliaCall::julia_command()}} if needed.
+\code{julia_command("out")} will invoke julia's print method and display summary info.
 If the julia object needs to be preserved, the best is probably to do something like
-foo <- julia_eval("out") (in R)
+\code{foo <- julia_eval("out")} (in R)
 }
